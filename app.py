@@ -26,5 +26,21 @@ def create_meal():
     
     return jsonify({"message": "Dados ausentes"}), 400
 
+@app.route("/meal/<int:meal_id>", methods=["PUT"])
+def update_meal(meal_id):
+    data = request.json
+    meal = Meal.query.get(meal_id)
+
+    if data and meal:
+        meal.name = data.get("name")
+        meal.description = data.get("description", meal.description)
+        meal.datetime = data.get("datetime")
+        meal.diet = data.get("diet")
+        db.session.commit()
+        
+        return jsonify({"message": "Refeição atualizada com sucesso!"})
+
+    return jsonify({"message": "Dados ausentes"}), 400
+
 if __name__ == "__main__":
     app.run(debug=True)
