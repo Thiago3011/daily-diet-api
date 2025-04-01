@@ -11,12 +11,14 @@ db.init_app(app)
 @app.route("/meal", methods=['POST'])
 def create_meal():
     data = request.json
+
     name = data.get("name")
     description = data.get("description", "")
     diet = data.get("diet")
+    datetime = data.get("datetime")
 
-    if name and diet:
-        meal = Meal(id=data.get("id"), name=name, description=description, created_at=data.get("created_at"), diet=diet)
+    if name and diet and datetime:
+        meal = Meal(id=data.get("id"), name=name, description=description, datetime=datetime, diet=diet)
         db.session.add(meal)
         db.session.commit()
 
